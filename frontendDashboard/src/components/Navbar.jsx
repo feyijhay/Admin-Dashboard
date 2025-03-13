@@ -10,7 +10,7 @@ const Navbar = () => {
       <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-xl font-bold">Admin Panel</h1>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 pr-12 md:pr-5">
           <button
             onClick={() => navigate("/login")}
             className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"

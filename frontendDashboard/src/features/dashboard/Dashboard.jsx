@@ -4,6 +4,7 @@ import { Chart, registerables } from "chart.js";
 import UserTable from "../../components/UserTable";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import Data from "../../store/data.js";
 
 Chart.register(...registerables);
 
@@ -101,7 +102,7 @@ const Dashboard = () => {
         {/* User Management Table */}
         <div className="bg-white p-4 rounded shadow overflow-x-auto">
           <h3 className="text-lg font-bold mb-4">User Management</h3>
-          <UserTable />
+          <UserTable users={Data}/>
         </div>
       </div>
     </div>
