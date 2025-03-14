@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
 import { Navigate, useLocation } from "react-router-dom";
-import { RootState } from "../store/store";
 
+// eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ children, requiredRole }) => {
+
   const location = useLocation();
   const auth = useSelector((state) => state.auth);
 
@@ -17,4 +18,4 @@ const PrivateRoute = ({ children, requiredRole }) => {
   return children;
 };
 
-export const PrivateRoute;
+export default PrivateRoute;
