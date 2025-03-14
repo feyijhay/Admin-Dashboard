@@ -65,6 +65,18 @@ const Signup = () => {
                 headers: { "Content-Type": "application/json" },
             });
 
+    try {
+      const response = await axios.post(endpoint, formData);
+      console.log(response)
+      if (response.status === 201) {
+        toast.success("Signup successful! Redirecting to login...", { autoClose: 3000 });
+        setTimeout(() => formData.role.toLowerCase() === "admin" ? navigate("/dashboard") :  (window.location.href = "https://www.fortunaeitsolutions.com/"), 3000);
+      }
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || "Signup failed. Please try again.";
+      toast.error(errorMessage);
+    }
+
             if (response.status === 201) {
                 toast.success("Signup successful! Redirecting to login...", { autoClose: 3000 });
                 setTimeout(() => navigate("/login"), 3000);

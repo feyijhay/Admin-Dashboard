@@ -7,7 +7,9 @@ import "react-toastify/dist/ReactToastify.css";
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("User");
+
+    const [role, setRole] = useState("Viewer"); // Default to User
+
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -15,6 +17,8 @@ const LoginPage = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
+
 
         const endpoint = role === "Admin"
             ? "https://admin-dashboard-h7kx.onrender.com/api/v1/Admin/login"
@@ -24,7 +28,11 @@ const LoginPage = () => {
             const response = await axios.post(endpoint, { email, password });
             toast.success("Login successful!");
             localStorage.setItem("token", response.data.token);
-            navigate("/dashboard");
+
+
+            // Redirect to dashboard
+            role === "Admin" ? navigate("/dashboard") : (window.location.href = "https://www.fortunaeitsolutions.com/");
+
         } catch (error) {
             toast.error(error.response?.data?.message || "Login failed! Please try again.");
         } finally {
@@ -44,7 +52,7 @@ const LoginPage = () => {
                             onChange={(e) => setRole(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
                         >
-                            <option value="User">User</option>
+                            <option value="User">Viewer</option>
                             <option value="Admin">Admin</option>
                         </select>
                     </div>
@@ -71,6 +79,7 @@ const LoginPage = () => {
                     <button
                         type="submit"
                         disabled={loading}
+                        onClick={handleSubmit}
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-md"
                     >
                         {loading ? "Loading..." : "Login"}

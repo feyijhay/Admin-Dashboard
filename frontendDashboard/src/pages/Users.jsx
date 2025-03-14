@@ -40,7 +40,8 @@ const Users = () => {
                 {searchTerm && filteredUsers.length > 0 && (
                     <div className="absolute left-0 mt-10 w-full bg-white border shadow-lg rounded-xl p-2 max-h-40 overflow-auto">
                         {filteredUsers.map((user) => (
-                            <div key={user.id} className="p-2 hover:bg-gray-100 rounded-md">
+                            <div key={user.id} className="p-2 hover:bg-gray-100 rounded-md cursor-pointer" onClick={() => navigate(`/edit-user/${user.id}`)
+                                }>
                                 {user.email}
                             </div>
                         ))}
@@ -49,8 +50,8 @@ const Users = () => {
             </div>
 
             <button
-                onClick={() => navigate("/add-user")}
                 className="ml-4 px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={()=>navigate("/add-user")}
             >
                 Add New User
             </button>

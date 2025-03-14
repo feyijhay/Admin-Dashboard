@@ -42,16 +42,16 @@ const EditUser = () => {
     }
 
     return (
-        <div className="p-4 max-w-md mx-auto bg-white shadow-md rounded-lg">
-            <h2 className="text-2xl font-bold mb-4">Edit User</h2>
-            <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="p-4  mx-auto bg-white shadow-md rounded-lg w-full">
+            <h2 className="text-2xl font-bold mb-4 pl-2">Edit User</h2>
+            <form onSubmit={handleSubmit} className="space-y-4 w-full flex justify-center flex-col">
                 <input
                     type="text"
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleChange}
                     placeholder={user.name.split(" ")[0]}
-                    className="w-full border p-2 rounded"
+                    className="w-[95%] border p-2 rounded pl-10"
                 />
                 <input
                     type="text"
@@ -59,7 +59,7 @@ const EditUser = () => {
                     value={formData.lastName}
                     onChange={handleChange}
                     placeholder={user.name.split(" ")[1]}
-                    className="w-full border p-2 rounded"
+                    className="w-[95%] border p-2 rounded pl-10"
                 />
                 <input
                     type="email"
@@ -67,7 +67,7 @@ const EditUser = () => {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder="Email"
-                    className="w-full border p-2 rounded"
+                    className="w-[95%] border p-2 rounded pl-10"
                 />
                 <input
                     type="password"
@@ -75,13 +75,13 @@ const EditUser = () => {
                     value={formData.password}
                     onChange={handleChange}
                     placeholder="New Password (optional)"
-                    className="w-full border p-2 rounded"
+                    className="w-[95%] border p-2 rounded pl-10"
                 />
                 <select
                     name="role"
                     value={formData.role}
                     onChange={handleChange}
-                    className="w-full border p-2 rounded"
+                    className="w-[95%] border p-2 rounded pl-10"
 
                 >
                     <option value="">Select Role</option>
@@ -89,7 +89,7 @@ const EditUser = () => {
                     <option value="User">Viewer</option>
                     <option value="Sub-Admin">Sub-Admin</option>
                 </select>
-                <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded">
+                <button type="submit" className="w-[95%] bg-blue-500 text-white p-2 rounded">
                     Update User
                 </button>
             </form>
