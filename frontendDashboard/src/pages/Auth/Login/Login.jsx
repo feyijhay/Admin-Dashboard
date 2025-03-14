@@ -7,30 +7,26 @@ import "react-toastify/dist/ReactToastify.css";
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("User"); // Default to User
+    const [role, setRole] = useState("User");
     const [loading, setLoading] = useState(false);
-    
+
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
 
-        const endpoint = role === "Admin" 
-            ? "https://admindashboard-8ee2.onrender.com/api/v1/Admin/login"
-            : "https://admindashboard-8ee2.onrender.com/api/v1/User/login";
+        const endpoint = role === "Admin"
+            ? "https://admin-dashboard-h7kx.onrender.com/api/v1/Admin/login"
+            : "https://admin-dashboard-h7kx.onrender.com/api/v1/User/login";
 
         try {
             const response = await axios.post(endpoint, { email, password });
             toast.success("Login successful!");
-
-            // Save token to localStorage
             localStorage.setItem("token", response.data.token);
-
-            // Redirect to dashboard
             navigate("/dashboard");
         } catch (error) {
-            toast.error(error.response?.data?.message || "Login failed!");
+            toast.error(error.response?.data?.message || "Login failed! Please try again.");
         } finally {
             setLoading(false);
         }
@@ -40,9 +36,7 @@ const LoginPage = () => {
         <div className="flex justify-center items-center h-screen bg-gray-100">
             <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-md">
                 <h2 className="text-3xl font-semibold text-center mb-6">Login</h2>
-                
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Role Selection */}
                     <div>
                         <label className="block font-medium">Role</label>
                         <select
@@ -54,8 +48,6 @@ const LoginPage = () => {
                             <option value="Admin">Admin</option>
                         </select>
                     </div>
-
-                    {/* Email Input */}
                     <div>
                         <label className="block font-medium">Email</label>
                         <input
@@ -66,8 +58,6 @@ const LoginPage = () => {
                             required
                         />
                     </div>
-
-                    {/* Password Input */}
                     <div>
                         <label className="block font-medium">Password</label>
                         <input
@@ -78,8 +68,6 @@ const LoginPage = () => {
                             required
                         />
                     </div>
-
-                    {/* Submit Button */}
                     <button
                         type="submit"
                         disabled={loading}
