@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -16,7 +16,6 @@ const LoginPage = () => {
         e.preventDefault();
         setLoading(true);
 
-        // Ensure role values match the comparison correctly
         const endpoint = role === "ADMIN"
             ? "https://admin-dashboard-h7kx.onrender.com/api/v1/Admin/login"
             : "https://admin-dashboard-h7kx.onrender.com/api/v1/User/login";
