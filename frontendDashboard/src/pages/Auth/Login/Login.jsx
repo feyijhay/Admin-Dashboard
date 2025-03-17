@@ -30,11 +30,13 @@ const LoginPage = () => {
                 console.log("Login Response:", response.data);
 
                 localStorage.setItem("token", response.data.token);
-                localStorage.setItem("admin", JSON.stringify(response.data));
 
                 if (role === "ADMIN") {
+                    localStorage.setItem("admin", JSON.stringify(response.data));
                     navigate("/dashboard");
                 } else {
+                    localStorage.setItem("user", JSON.stringify(response.data));
+
                     window.location.href = "https://www.fortunaeitsolutions.com/";
                 }
             } else {
