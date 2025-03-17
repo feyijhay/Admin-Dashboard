@@ -134,10 +134,12 @@ const Signup = () => {
 
                     <div className="flex flex-col">
                         <label htmlFor="role" className="text-sm font-semibold">Role</label>
-                        <select id="role" name="role" value={formData.role} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1">
+                        <select id="role" name="role" value={formData.role} onChange={handleChange}
+                                className="border-2 border-gray-300 rounded-md p-2 mt-1">
                             <option value="">Select Role</option>
                             <option value="Admin">Admin</option>
-                            <option value="User">User</option>
+                            <option value="Viewer">Viewer</option>
+                            <option value="Editor">Editor</option>
                         </select>
                         {errors.role && <div className="text-red-500 text-sm mt-1">{errors.role}</div>}
                     </div>
