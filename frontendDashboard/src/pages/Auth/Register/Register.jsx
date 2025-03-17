@@ -16,7 +16,7 @@ const Signup = () => {
     });
 
     const [errors, setErrors] = useState({});
-    const [loading, setLoading] = useState(false); // Loading state
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -55,7 +55,7 @@ const Signup = () => {
         e.preventDefault();
         if (!validate()) return;
 
-        setLoading(true); // Set loading state to true
+        setLoading(true);
 
         const API_BASE_URL = "https://admin-dashboard-h7kx.onrender.com/api/v1";
         const endpoint =
@@ -135,7 +135,8 @@ const Signup = () => {
 
                     <div className="flex flex-col">
                         <label htmlFor="role" className="text-sm font-semibold">Role</label>
-                        <select id="role" name="role" value={formData.role} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1">
+                        <select id="role" name="role" value={formData.role} onChange={handleChange}
+                                className="border-2 border-gray-300 rounded-md p-2 mt-1">
                             <option value="">Select Role</option>
                             <option value="ADMIN">ADMIN</option>
                             <option value="VIEWER">VIEWER</option>

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Data from "../store/data";
 
@@ -28,13 +28,12 @@ const EditUser = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        // Update user data in Data array
         const userIndex = Data.findIndex((user) => user.id === parseInt(id));
         if (userIndex !== -1) {
             Data[userIndex] = { ...Data[userIndex], ...formData };
         }
 
-        navigate("/"); // Redirect to dashboard after update
+        navigate("/");
     };
 
     if (!user) {
@@ -85,9 +84,9 @@ const EditUser = () => {
 
                 >
                     <option value="">Select Role</option>
-                    <option value="Admin">Admin</option>
-                    <option value="User">Viewer</option>
-                    <option value="Sub-Admin">Sub-Admin</option>
+                    <option value="VIEWER">VIEWER</option>
+                    <option value="EDITOR">EDITOR</option>
+                    <option value="ADMIN">ADMIN</option>
                 </select>
                 <button type="submit" className="w-[95%] bg-blue-500 text-white p-2 rounded">
                     Update User
