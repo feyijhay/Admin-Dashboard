@@ -70,10 +70,19 @@ const Signup = () => {
 
             if (response.status === 201) {
                 toast.success("Signup successful! Redirecting...", { autoClose: 3000 });
+
                 setTimeout(() => {
-                    formData.role.toLowerCase() === "admin"
-                        ? navigate("/dashboard")
-                        : (window.location.href = "https://www.fortunaeitsolutions.com/");
+                    if (formData.role.toLowerCase() === "admin"){
+                        localStorage.setItem("admin", JSON.stringify(response.data));
+                        navigate("/dashboard");
+
+                    }
+
+                    else {
+                        (window.location.href = "https://www.fortunaeitsolutions.com/");
+                        localStorage.setItem("user", JSON.stringify(response.data));
+
+                    }
                 }, 3000);
             }
             else {

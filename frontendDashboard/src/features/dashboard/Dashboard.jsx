@@ -22,7 +22,7 @@ const Dashboard = () => {
       if (adminData) {
         try {
           const adminName = JSON.parse(adminData);
-          setAdminName(adminName.firstName +" " + adminName.lastName || "Admin");
+          setAdminName(adminName.firstName +" " + adminName.lastName);
         } catch (error) {
           console.error("Error parsing admin data:", error);
         }
@@ -71,7 +71,7 @@ const Dashboard = () => {
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
                 </div>
             ) : (
-                `Welcome, ${adminName}`
+                `Welcome, ${adminName ? adminName : "ADMIN"}`
             )}
           </div>
 
