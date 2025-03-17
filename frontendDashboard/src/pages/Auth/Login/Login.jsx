@@ -7,9 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 const LoginPage = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-
-    const [role, setRole] = useState("Viewer"); // Default to User
-
+    const [role, setRole] = useState("VIEWER");
     const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate();
@@ -18,22 +16,33 @@ const LoginPage = () => {
         e.preventDefault();
         setLoading(true);
 
-
-
-        const endpoint = role === "Admin"
+        // Ensure role values match the comparison correctly
+        const endpoint = role === "ADMIN"
             ? "https://admin-dashboard-h7kx.onrender.com/api/v1/Admin/login"
             : "https://admin-dashboard-h7kx.onrender.com/api/v1/User/login";
 
         try {
             const response = await axios.post(endpoint, { email, password });
-            toast.success("Login successful!");
-            localStorage.setItem("token", response.data.token);
+            console.log(role)
+            console.log(response);
+            if (response.status === 201) {
+                toast.success("Login successful!");
+                console.log("Login Response:", response.data);
 
+                localStorage.setItem("token", response.data.token);
+                localStorage.setItem("admin", JSON.stringify(response.data));
 
-            // Redirect to dashboard
-            role === "Admin" ? navigate("/dashboard") : (window.location.href = "https://www.fortunaeitsolutions.com/");
-
+                if (role === "ADMIN") {
+                    navigate("/dashboard");
+                } else {
+                    window.location.href = "https://www.fortunaeitsolutions.com/";
+                }
+            } else {
+                toast.error(response.data?.message || "Login failed!");
+                console.error("Error Response:", response.data);
+            }
         } catch (error) {
+            console.error("Login Error:", error.response?.data || error);
             toast.error(error.response?.data?.message || "Login failed! Please try again.");
         } finally {
             setLoading(false);
@@ -52,8 +61,9 @@ const LoginPage = () => {
                             onChange={(e) => setRole(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
                         >
-                            <option value="User">Viewer</option>
-                            <option value="Admin">Admin</option>
+                            <option value="VIEWER">VIEWER</option>
+                            <option value="EDITOR">EDITOR</option>
+                            <option value="ADMIN">ADMIN</option>
                         </select>
                     </div>
                     <div>
@@ -79,7 +89,6 @@ const LoginPage = () => {
                     <button
                         type="submit"
                         disabled={loading}
-                        onClick={handleSubmit}
                         className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold p-3 rounded-md"
                     >
                         {loading ? "Loading..." : "Login"}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -12,10 +12,11 @@ const Signup = () => {
         lastName: "",
         email: "",
         password: "",
-        role: "", // Role selection: Admin or User
+        role: "",
     });
 
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false); // Loading state
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -54,9 +55,11 @@ const Signup = () => {
         e.preventDefault();
         if (!validate()) return;
 
+        setLoading(true); // Set loading state to true
+
         const API_BASE_URL = "https://admin-dashboard-h7kx.onrender.com/api/v1";
         const endpoint =
-            formData.role === "Admin"
+            formData.role === "ADMIN"
                 ? `${API_BASE_URL}/Admin/registerAdmin`
                 : `${API_BASE_URL}/User/registerUser`;
 
@@ -65,25 +68,23 @@ const Signup = () => {
                 headers: { "Content-Type": "application/json" },
             });
 
-    try {
-      const response = await axios.post(endpoint, formData);
-      console.log(response)
-      if (response.status === 201) {
-        toast.success("Signup successful! Redirecting to login...", { autoClose: 3000 });
-        setTimeout(() => formData.role.toLowerCase() === "admin" ? navigate("/dashboard") :  (window.location.href = "https://www.fortunaeitsolutions.com/"), 3000);
-      }
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || "Signup failed. Please try again.";
-      toast.error(errorMessage);
-    }
-
             if (response.status === 201) {
-                toast.success("Signup successful! Redirecting to login...", { autoClose: 3000 });
-                setTimeout(() => navigate("/login"), 3000);
+                toast.success("Signup successful! Redirecting...", { autoClose: 3000 });
+                setTimeout(() => {
+                    formData.role.toLowerCase() === "admin"
+                        ? navigate("/dashboard")
+                        : (window.location.href = "https://www.fortunaeitsolutions.com/");
+                }, 3000);
+            }
+            else {
+                console.log(response);
+                toast.error(response.data);
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || "Signup failed. Please try again.";
             toast.error(errorMessage);
+        } finally {
+            setLoading(false); // Reset loading state
         }
     };
 
@@ -136,14 +137,25 @@ const Signup = () => {
                         <label htmlFor="role" className="text-sm font-semibold">Role</label>
                         <select id="role" name="role" value={formData.role} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1">
                             <option value="">Select Role</option>
-                            <option value="Admin">Admin</option>
-                            <option value="User">User</option>
+                            <option value="ADMIN">ADMIN</option>
+                            <option value="VIEWER">VIEWER</option>
+                            <option value="EDITOR">EDITOR</option>
                         </select>
                         {errors.role && <div className="text-red-500 text-sm mt-1">{errors.role}</div>}
                     </div>
 
                     <div className="flex justify-center">
-                        <button type="submit" className="w-full bg-blue-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-blue-600">Sign Up</button>
+                        <button
+                            type="submit"
+                            className={`w-full bg-blue-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-blue-600 flex items-center justify-center ${
+                                loading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
+                            disabled={loading}
+                        >
+                            {loading ? (
+                                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span>
+                            ) : "Sign Up"}
+                        </button>
                     </div>
 
                     <div className="text-center mt-4">
