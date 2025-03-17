@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -52,8 +52,9 @@ const LoginPage = () => {
                             onChange={(e) => setRole(e.target.value)}
                             className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
                         >
-                            <option value="User">Viewer</option>
                             <option value="Admin">Admin</option>
+                            <option value="Viewer">Viewer</option>
+                            <option value="Editor">Editor</option>
                         </select>
                     </div>
                     <div>

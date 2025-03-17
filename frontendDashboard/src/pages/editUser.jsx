@@ -86,8 +86,8 @@ const EditUser = () => {
                 >
                     <option value="">Select Role</option>
                     <option value="Admin">Admin</option>
-                    <option value="User">Viewer</option>
-                    <option value="Sub-Admin">Sub-Admin</option>
+                    <option value="Viewer">Viewer</option>
+                    <option value="Editor">Editor</option>
                 </select>
                 <button type="submit" className="w-[95%] bg-blue-500 text-white p-2 rounded">
                     Update User
