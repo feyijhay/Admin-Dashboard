@@ -1,52 +1,64 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import  { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const navigate = useNavigate();
 
-  return (
-    <div className="relative">
-      {/* Toggle Button */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="absolute top-5 right-[-400px] bg-gray-800 text-white p-2 rounded-full shadow-md md:hidden"
-      >
-        {isOpen ? <FaChevronLeft size={20} /> : <FaChevronRight size={20} />}
-      </button>
+    const isAdminLoggedIn = () => !!localStorage.getItem("admin");
 
-      {/* Sidebar */}
-      <div
-        className={`bg-gray-800 h-full text-white w-64 min-h-screen p-4 fixed top-0 left-0 transform ${
-          isOpen ? "translate-x-0" : "-translate-x-64"
-        } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
-      >
-        <h1 className="text-3xl font-bold">Dashboard</h1>
-        <ul className="mt-6">
-          <li className="mb-2">
-            <Link to="/dashboard" className="hover:text-gray-400 block py-2 text-xl font-bold">
-              Analytics
-            </Link>
-          </li>
-          <li className="mb-2">
-            <Link to="/users" className="hover:text-gray-400 block py-2 text-xl font-bold">
-              User Management
-            </Link>
-          </li>
-            <li>
-                <Link to='/activeUsers' className="hover:text-gray-400 block py-2 text-xl font-bold">
-                    Active Users
-                </Link>
-            </li>
-          <li className="mb-2">
-            <Link to="/settings" className="hover:text-gray-400 block py-2 text-xl font-bold">
-              Settings
-            </Link>
-          </li>
-        </ul>
-      </div>
-    </div>
-  );
+    const handleNavigation = (path) => {
+        if (!isAdminLoggedIn()) {
+            toast.warn("You are not logged in. Login to perform any action");
+            return;
+        }
+        navigate(path);
+    };
+
+    return (
+        <div className="relative">
+            {/* Toggle Button */}
+            <button
+                onClick={() => setIsOpen(!isOpen)}
+                className="absolute top-5 right-[-400px] bg-gray-800 text-white p-2 rounded-full shadow-md md:hidden"
+            >
+                {isOpen ? <FaChevronLeft size={20} /> : <FaChevronRight size={20} />}
+            </button>
+
+            {/* Sidebar */}
+            <div
+                className={`bg-gray-800 h-full text-white w-64 min-h-screen p-4 fixed top-0 left-0 transform ${
+                    isOpen ? "translate-x-0" : "-translate-x-64"
+                } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
+            >
+                <h1 className="text-3xl font-bold">Dashboard</h1>
+                <ul className="mt-6">
+                    <li className="mb-2">
+                        <button onClick={() => handleNavigation("/dashboard")} className="hover:text-gray-400 block py-2 text-xl font-bold text-left w-full">
+                            Analytics
+                        </button>
+                    </li>
+                    <li className="mb-2">
+                        <button onClick={() => handleNavigation("/users")} className="hover:text-gray-400 block py-2 text-xl font-bold text-left w-full">
+                            User Management
+                        </button>
+                    </li>
+                    <li className="mb-2">
+                        <button onClick={() => handleNavigation("/activeUsers")} className="hover:text-gray-400 block py-2 text-xl font-bold text-left w-full">
+                            Active Users
+                        </button>
+                    </li>
+                    <li className="mb-2">
+                        <button onClick={() => handleNavigation("/settings")} className="hover:text-gray-400 block py-2 text-xl font-bold text-left w-full">
+                            Settings
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    );
 };
 
 export default Sidebar;
