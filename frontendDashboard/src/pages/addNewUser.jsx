@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Data from '../store/data.js';
+import {toast} from "react-toastify";
 
 const AddUserForm = () => {
     const navigate = useNavigate();
@@ -17,6 +18,10 @@ const AddUserForm = () => {
     };
 
     const handleSubmit = (e) => {
+        if(!localStorage.getItem("admin")){
+            toast.warn("You are not logged in. Login to perform any action");
+            return;
+        }
         e.preventDefault();
         const newUser = {
             id: Data.length + 1,

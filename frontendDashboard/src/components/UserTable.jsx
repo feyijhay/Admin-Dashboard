@@ -1,12 +1,28 @@
-import React, { useState } from 'react';
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
+// eslint-disable-next-line react/prop-types
 const UserTable = ({ users }) => {
     const [userList, setUserList] = useState(users);
-    const navigate = useNavigate(); // ✅ Move useNavigate to top level
+    const navigate = useNavigate();
+
+    const isAdminLoggedIn = () => !!localStorage.getItem("admin");
+
+    const handleEdit = (userId) => {
+        if (!isAdminLoggedIn()) {
+            toast.warn("You are not logged in. Login to perform any action");
+            return;
+        }
+        navigate(`/edit-user/${userId}`);
+    };
 
     const handleDelete = (userId) => {
-        setUserList(userList.filter(user => user.id !== userId));
+        if (!isAdminLoggedIn()) {
+            toast.warn("You are not logged in. Login to perform any action");
+            return;
+        }
+        setUserList(userList.filter((user) => user.id !== userId));
     };
 
     return (
@@ -22,19 +38,33 @@ const UserTable = ({ users }) => {
                 </tr>
                 </thead>
                 <tbody>
-                {userList.map(user => (
+                {userList.map((user) => (
                     <tr key={user.id} className="border">
                         <td className="py-2 px-4">{user.name}</td>
                         <td className="py-2 px-4">{user.email}</td>
                         <td className="py-2 px-4">{user.role}</td>
                         <td className="py-2 px-4">
-                <span className={`py-1 rounded ${user.status === 'active' ? 'bg-green-100 text-green-800 px-6' : 'bg-red-100 text-red-800 px-4'}`}>
+                <span
+                    className={`py-1 rounded ${
+                        user.status === "active"
+                            ? "bg-green-100 text-green-800 px-6"
+                            : "bg-red-100 text-red-800 px-4"
+                    }`}
+                >
                   {user.status}
                 </span>
                         </td>
                         <td className="py-2 px-4">
-                            <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => navigate(`/edit-user/${user.id}`)}>Edit</button>
-                            <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(user.id)}>
+                            <button
+                                className="text-blue-500 hover:text-blue-700 mr-2"
+                                onClick={() => handleEdit(user.id)}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="text-red-500 hover:text-red-700"
+                                onClick={() => handleDelete(user.id)}
+                            >
                                 Delete
                             </button>
                         </td>
@@ -45,19 +75,40 @@ const UserTable = ({ users }) => {
 
             {/* Mobile View - Card Layout */}
             <div className="md:hidden">
-                {userList.map(user => (
+                {userList.map((user) => (
                     <div key={user.id} className="bg-white p-4 rounded shadow mb-4 border">
-                        <p><strong>Name:</strong> {user.name}</p>
-                        <p><strong>Email:</strong> {user.email}</p>
-                        <p><strong>Role:</strong> {user.role}</p>
-                        <p><strong>Status:</strong>
-                            <span className={`ml-2 px-2 py-1 rounded ${user.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        <p>
+                            <strong>Name:</strong> {user.name}
+                        </p>
+                        <p>
+                            <strong>Email:</strong> {user.email}
+                        </p>
+                        <p>
+                            <strong>Role:</strong> {user.role}
+                        </p>
+                        <p>
+                            <strong>Status:</strong>
+                            <span
+                                className={`ml-2 px-2 py-1 rounded ${
+                                    user.status === "active"
+                                        ? "bg-green-100 text-green-800"
+                                        : "bg-red-100 text-red-800"
+                                }`}
+                            >
                 {user.status}
               </span>
                         </p>
                         <div className="mt-2">
-                            <button className="text-blue-500 hover:text-blue-700 mr-2" onClick={() => navigate(`/edit-user/${user.id}`)}>Edit</button>
-                            <button className="text-red-500 hover:text-red-700" onClick={() => handleDelete(user.id)}>
+                            <button
+                                className="text-blue-500 hover:text-blue-700 mr-2"
+                                onClick={() => handleEdit(user.id)}
+                            >
+                                Edit
+                            </button>
+                            <button
+                                className="text-red-500 hover:text-red-700"
+                                onClick={() => handleDelete(user.id)}
+                            >
                                 Delete
                             </button>
                         </div>

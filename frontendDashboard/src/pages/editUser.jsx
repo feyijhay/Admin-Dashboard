@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Data from "../store/data";
+import {toast} from "react-toastify";
 
 const EditUser = () => {
     const { id } = useParams();
@@ -26,14 +27,17 @@ const EditUser = () => {
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
+        if(!localStorage.getItem("admin")){
+            toast.warn("You are not logged in. Login to perform any action");
+            return;
+        }        e.preventDefault();
 
         const userIndex = Data.findIndex((user) => user.id === parseInt(id));
         if (userIndex !== -1) {
             Data[userIndex] = { ...Data[userIndex], ...formData };
         }
 
-        navigate("/");
+        navigate("/dashboard");
     };
 
     if (!user) {
