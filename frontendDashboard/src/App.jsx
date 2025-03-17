@@ -28,7 +28,7 @@ import EditUser from "./pages/editUser.jsx";
         <div className="p-6">
 
           <Routes>
-            <Route path="/" element={<Navigate to="/dashboard" />} />
+            <Route path="/" element={<Dashboard/>} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<Dashboard />} />
