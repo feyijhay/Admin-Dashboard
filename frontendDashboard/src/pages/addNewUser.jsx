@@ -40,9 +40,9 @@ const AddUserForm = () => {
                 <input type="email" name="email" placeholder="Email" onChange={handleChange} className="border p-2 rounded" required />
                 <input type="password" name="password" placeholder="Password" onChange={handleChange} className="border p-2 rounded" required />
                 <select name="role" onChange={handleChange} className="border p-2 rounded">
-                    <option value="Admin">Admin</option>
-                    <option value="Viewer">Viewer</option>
-                    <option value="Editor">Editor</option>
+                    <option value="VIEWER">VIEWER</option>
+                    <option value="EDITOR">EDITOR</option>
+                    <option value="ADMIN">ADMIN</option>
                 </select>
                 <button type="submit" className="bg-blue-500 text-white p-2 rounded">Add User</button>
             </form>

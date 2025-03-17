@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState, useEffect } from "react";
 import { Line, Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import UserTable from "../../components/UserTable";
@@ -12,8 +12,25 @@ const Dashboard = () => {
   const [timeRange, setTimeRange] = useState("week");
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
+  const [adminName, setAdminName] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock Data - Replace with API Calls
+  useEffect(() => {
+    setTimeout(() => {
+      const adminData = localStorage.getItem("admin");
+      console.log(localStorage.getItem("admin"));
+      if (adminData) {
+        try {
+          const adminName = JSON.parse(adminData);
+          setAdminName(adminName.firstName +" " + adminName.lastName || "Admin");
+        } catch (error) {
+          console.error("Error parsing admin data:", error);
+        }
+      }
+      setLoading(false);
+    }, 1500); // Simulate loading delay
+  }, []);
+
   const stats = {
     totalUsers: 2453,
     activeUsers: 1892,
@@ -45,67 +62,78 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="flex flex-col md:flex-row">
-      <div className="flex-1 p-4 md:p-8">
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {Object.entries(stats).map(([key, value]) => (
-            <div key={key} className="bg-white p-4 rounded shadow text-center">
-              <h3 className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, " $1")}</h3>
-              <p className="text-2xl font-bold">{key === "revenue" ? `$${value.toLocaleString()}` : value}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <select
-            className="p-2 border rounded w-full sm:w-auto"
-            value={timeRange}
-            onChange={(e) => setTimeRange(e.target.value)}
-          >
-            <option value="week">Last Week</option>
-            <option value="month">Last Month</option>
-            <option value="year">Last Year</option>
-          </select>
-
-          <div className="flex flex-col sm:flex-row gap-2 w-full">
-            <DatePicker
-              selected={startDate}
-              onChange={(date) => setStartDate(date)}
-              className="p-2 border rounded w-full"
-            />
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              className="p-2 border rounded w-full"
-            />
+      <div className="flex flex-col md:flex-row">
+        <div className="flex-1 p-4 md:p-8">
+          {/* Admin Header */}
+          <div className="text-2xl font-bold text-center mb-6">
+            {loading ? (
+                <div className="flex justify-center items-center">
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                </div>
+            ) : (
+                `Welcome, ${adminName}`
+            )}
           </div>
-        </div>
 
-        {/* Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold mb-4">Revenue Trends</h3>
-            <div className="w-full overflow-x-auto">
-              <Line data={revenueData} />
-            </div>
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {Object.entries(stats).map(([key, value]) => (
+                <div key={key} className="bg-white p-4 rounded shadow text-center">
+                  <h3 className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, " $1")}</h3>
+                  <p className="text-2xl font-bold">{key === "revenue" ? `$${value.toLocaleString()}` : value}</p>
+                </div>
+            ))}
           </div>
-          <div className="bg-white p-4 rounded shadow">
-            <h3 className="text-lg font-bold mb-4">User Activity</h3>
-            <div className="w-full overflow-x-auto">
-              <Bar data={userActivityData} />
+
+          {/* Filters */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+            <select
+                className="p-2 border rounded w-full sm:w-auto"
+                value={timeRange}
+                onChange={(e) => setTimeRange(e.target.value)}
+            >
+              <option value="week">Last Week</option>
+              <option value="month">Last Month</option>
+              <option value="year">Last Year</option>
+            </select>
+
+            <div className="flex flex-col sm:flex-row gap-2 w-full">
+              <DatePicker
+                  selected={startDate}
+                  onChange={(date) => setStartDate(date)}
+                  className="p-2 border rounded w-full"
+              />
+              <DatePicker
+                  selected={endDate}
+                  onChange={(date) => setEndDate(date)}
+                  className="p-2 border rounded w-full"
+              />
             </div>
           </div>
-        </div>
 
-        {/* User Management Table */}
-        <div className="bg-white p-4 rounded shadow overflow-x-auto">
-          <h3 className="text-lg font-bold mb-4">User Management</h3>
-          <UserTable users={Data}/>
+          {/* Charts */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <div className="bg-white p-4 rounded shadow">
+              <h3 className="text-lg font-bold mb-4">Revenue Trends</h3>
+              <div className="w-full overflow-x-auto">
+                <Line data={revenueData} />
+              </div>
+            </div>
+            <div className="bg-white p-4 rounded shadow">
+              <h3 className="text-lg font-bold mb-4">User Activity</h3>
+              <div className="w-full overflow-x-auto">
+                <Bar data={userActivityData} />
+              </div>
+            </div>
+          </div>
+
+          {/* User Management Table */}
+          <div className="bg-white p-4 rounded shadow overflow-x-auto">
+            <h3 className="text-lg font-bold mb-4">User Management</h3>
+            <UserTable users={Data} />
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
