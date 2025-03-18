@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -17,8 +17,30 @@ const Sidebar = () => {
         navigate(path);
     };
 
+    // Close sidebar when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (isOpen && !event.target.closest(".sidebar")) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen]);
+
     return (
         <div className="relative">
+            {/* Overlay when sidebar is open */}
+            {isOpen && (
+                <div
+                    className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+                    onClick={() => setIsOpen(false)}
+                ></div>
+            )}
+
             {/* Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
@@ -29,9 +51,9 @@ const Sidebar = () => {
 
             {/* Sidebar */}
             <div
-                className={`bg-gray-800 h-full text-white w-64 min-h-screen p-4 fixed top-0 left-0 transform ${
+                className={`sidebar bg-gray-800 h-full text-white w-64 min-h-screen p-4 fixed top-0 left-0 transform ${
                     isOpen ? "translate-x-0" : "-translate-x-64"
-                } transition-transform duration-300 ease-in-out md:relative md:translate-x-0`}
+                } transition-transform duration-300 ease-in-out md:relative md:translate-x-0 z-50`}
             >
                 <h1 className="text-3xl font-bold">Dashboard</h1>
                 <ul className="mt-6">

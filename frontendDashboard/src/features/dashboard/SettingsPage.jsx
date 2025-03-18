@@ -10,7 +10,7 @@ const SettingsPage = () => {
     const [password, setPassword] = useState('');
 
     return (
-        <div className={`p-8 bg-white shadow rounded h-full ${isDarkMode ? "dark bg-neutral-900 text-white " : ""}`}>
+        <div className={`p-8 bg-white shadow rounded h-full ${isDarkMode ? "dark:bg-neutral-900 text-white " : ""}`}>
 
             {/* Profile Settings */}
             <div className="mb-6">
