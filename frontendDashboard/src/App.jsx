@@ -1,5 +1,5 @@
 // import React from "react";
-import {Routes, Route, useLocation, Navigate} from "react-router-dom";
+import {Routes, Route, useLocation} from "react-router-dom";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Users from "./pages/Users";
@@ -21,11 +21,11 @@ import EditUser from "./pages/editUser.jsx";
 
 
   return (
-    <div className="flex">
+    <div className="flex dark:bg-neutral-900 min-h-screen">
       {!excludePaths.includes(location.pathname) && <Sidebar/>}
-      <div className="flex-1">
+      <div className="flex-1 dark:bg-neutral-900">
         <Navbar />
-        <div className="p-6">
+        <div className="p-6 dark:bg-neutral-900">
 
           <Routes>
             <Route path="/" element={<Dashboard/>} />

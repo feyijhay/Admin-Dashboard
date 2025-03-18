@@ -74,9 +74,9 @@ const UserTable = ({ users }) => {
             </table>
 
             {/* Mobile View - Card Layout */}
-            <div className="md:hidden">
+            <div className="md:hidden ">
                 {userList.map((user) => (
-                    <div key={user.id} className="bg-white p-4 rounded shadow mb-4 border">
+                    <div key={user.id} className="bg-white p-4 rounded shadow mb-4 border dark:bg-gray-500">
                         <p>
                             <strong>Name:</strong> {user.name}
                         </p>

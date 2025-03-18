@@ -45,7 +45,7 @@ const EditUser = () => {
     }
 
     return (
-        <div className="p-4  mx-auto bg-white shadow-md rounded-lg w-full">
+        <div className="p-4  mx-auto bg-white shadow-md rounded-lg w-full dark:bg-neutral-600 text-gray-200">
             <h2 className="text-2xl font-bold mb-4 pl-2">Edit User</h2>
             <form onSubmit={handleSubmit} className="space-y-4 w-full flex justify-center flex-col">
                 <input
