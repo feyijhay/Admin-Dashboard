@@ -27,7 +27,7 @@ const Users = () => {
         <div>
 
 
-        <div className="p-4 flex justify-between items-center">
+        <div className="p-4 flex justify-between items-center ">
             <div className="relative flex">
                 <input
                     type="text"
@@ -38,7 +38,7 @@ const Users = () => {
                 />
 
                 {searchTerm && filteredUsers.length > 0 && (
-                    <div className="absolute left-0 mt-10 w-full bg-white border shadow-lg rounded-xl p-2 max-h-40 overflow-auto">
+                    <div className="absolute left-0 mt-10 w-full bg-white border shadow-lg rounded-xl p-2 max-h-40 overflow-auto dark:bg-neutral-600">
                         {filteredUsers.map((user) => (
                             <div key={user.id} className="p-2 hover:bg-gray-100 rounded-md cursor-pointer" onClick={() => navigate(`/edit-user/${user.id}`)
                                 }>
@@ -56,7 +56,10 @@ const Users = () => {
                 Add New User
             </button>
         </div>
-            <UserTable users={Data} />
+            <div className="dark:bg-neutral-600 font-bold">
+                <UserTable users={Data} />
+            </div>
+
         </div>
     );
 };

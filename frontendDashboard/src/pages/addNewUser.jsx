@@ -37,8 +37,8 @@ const AddUserForm = () => {
     };
 
     return (
-        <div className="p-4">
-            <h2 className="text-lg font-bold mb-4">Add New User</h2>
+        <div className="px-4 dark:bg-neutral-600 rounded-2xl py-10">
+            <h2 className="text-lg font-bold mb-4 dark:text-gray-200">Add New User</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2">
                 <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} className="border p-2 rounded" required />
                 <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} className="border p-2 rounded" required />

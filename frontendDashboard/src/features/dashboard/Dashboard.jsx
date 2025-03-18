@@ -65,7 +65,7 @@ const Dashboard = () => {
       <div className="flex flex-col md:flex-row">
         <div className="flex-1 p-4 md:p-8">
           {/* Admin Header */}
-          <div className="text-2xl font-bold text-center mb-6">
+          <div className="text-2xl font-bold text-center mb-6 dark:text-gray-200">
             {loading ? (
                 <div className="flex justify-center items-center">
                   <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
@@ -78,17 +78,17 @@ const Dashboard = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
             {Object.entries(stats).map(([key, value]) => (
-                <div key={key} className="bg-white p-4 rounded shadow text-center">
-                  <h3 className="text-gray-500 capitalize">{key.replace(/([A-Z])/g, " $1")}</h3>
+                <div key={key} className="bg-white p-4 rounded shadow text-center dark:bg-neutral-600">
+                  <h3 className="dark:text-gray-300 font-extrabold capitalize">{key.replace(/([A-Z])/g, " $1")}</h3>
                   <p className="text-2xl font-bold">{key === "revenue" ? `$${value.toLocaleString()}` : value}</p>
                 </div>
             ))}
           </div>
 
           {/* Filters */}
-          <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 mb-6 ">
             <select
-                className="p-2 border rounded w-full sm:w-auto"
+                className="p-2 border rounded w-full sm:w-auto dark:bg-neutral-600"
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
             >
@@ -101,18 +101,18 @@ const Dashboard = () => {
               <DatePicker
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
-                  className="p-2 border rounded w-full"
+                  className="p-2 border rounded w-full dark:bg-neutral-600"
               />
               <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
-                  className="p-2 border rounded w-full"
+                  className="p-2 border rounded w-full dark:bg-neutral-600"
               />
             </div>
           </div>
 
           {/* Charts */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6 ">
             <div className="bg-white p-4 rounded shadow">
               <h3 className="text-lg font-bold mb-4">Revenue Trends</h3>
               <div className="w-full overflow-x-auto">
@@ -128,8 +128,8 @@ const Dashboard = () => {
           </div>
 
           {/* User Management Table */}
-          <div className="bg-white p-4 rounded shadow overflow-x-auto">
-            <h3 className="text-lg font-bold mb-4">User Management</h3>
+          <div className="bg-white p-4 font-bold rounded shadow overflow-x-auto dark:bg-neutral-600">
+            <h3 className="text-lg font-bold mb-4 dark:text-gray-200">User Management</h3>
             <UserTable users={Data} />
           </div>
         </div>

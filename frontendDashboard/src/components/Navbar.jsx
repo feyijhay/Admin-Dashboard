@@ -11,7 +11,7 @@ const Navbar = () => {
   };
 
   return (
-      <nav className="bg-white shadow p-4">
+      <nav className="bg-white shadow p-4 dark:bg-neutral-900 dark:text-white dark:border-b dark:border-white">
         <div className="container mx-auto flex justify-between items-center">
           <h1 className="text-xl font-bold">Admin Panel</h1>
 
@@ -26,7 +26,7 @@ const Navbar = () => {
             ) : (
                 <>
                   <button
-                      onClick={() => navigate("/")}
+                      onClick={() => navigate("/login")}
                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
                   >
                     Login
