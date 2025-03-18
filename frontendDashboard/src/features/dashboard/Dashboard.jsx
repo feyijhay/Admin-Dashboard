@@ -68,7 +68,7 @@ const Dashboard = () => {
           <div className="text-2xl font-bold text-center mb-6 dark:text-gray-200">
             {loading ? (
                 <div className="flex justify-center items-center">
-                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                  <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900 dark:border-gray-200"></div>
                 </div>
             ) : (
                 `Welcome, ${adminName ? adminName : "ADMIN"}`
@@ -80,7 +80,7 @@ const Dashboard = () => {
             {Object.entries(stats).map(([key, value]) => (
                 <div key={key} className="bg-white p-4 rounded shadow text-center dark:bg-neutral-600">
                   <h3 className="dark:text-gray-300 font-extrabold capitalize">{key.replace(/([A-Z])/g, " $1")}</h3>
-                  <p className="text-2xl font-bold">{key === "revenue" ? `$${value.toLocaleString()}` : value}</p>
+                  <p className="text-2xl font-bold dark:text-gray-300">{key === "revenue" ? `£${value.toLocaleString()}` : value}</p>
                 </div>
             ))}
           </div>
@@ -88,7 +88,7 @@ const Dashboard = () => {
           {/* Filters */}
           <div className="flex flex-col sm:flex-row gap-4 mb-6 ">
             <select
-                className="p-2 border rounded w-full sm:w-auto dark:bg-neutral-600"
+                className="p-2 border rounded w-full sm:w-auto dark:bg-neutral-600 dark:text-gray-300"
                 value={timeRange}
                 onChange={(e) => setTimeRange(e.target.value)}
             >
@@ -101,12 +101,12 @@ const Dashboard = () => {
               <DatePicker
                   selected={startDate}
                   onChange={(date) => setStartDate(date)}
-                  className="p-2 border rounded w-full dark:bg-neutral-600"
+                  className="p-2 border rounded w-full dark:bg-neutral-600 dark:text-gray-300"
               />
               <DatePicker
                   selected={endDate}
                   onChange={(date) => setEndDate(date)}
-                  className="p-2 border rounded w-full dark:bg-neutral-600"
+                  className="p-2 border rounded w-full dark:bg-neutral-600 dark:text-gray-300 "
               />
             </div>
           </div>
