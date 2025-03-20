@@ -2,10 +2,11 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
+// eslint-disable-next-line react/prop-types
 const Sidebar = ({ isOpen, toggleSidebar }) => {
     const navigate = useNavigate();
 
-    const isAdminLoggedIn = () => !!localStorage.getItem("admin");
+    const isAdminLoggedIn = () => !!localStorage.getItem("user");
 
     const handleNavigation = (path) => {
         if (!isAdminLoggedIn()) {

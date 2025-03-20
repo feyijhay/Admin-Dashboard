@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import UserTable from "../components/UserTable";
 import Data from "../store/data.js";
@@ -6,7 +6,15 @@ import Data from "../store/data.js";
 const Users = () => {
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
+    const [userRole, setUserRole] = useState("");
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user) {
+            setUserRole(user.role);
+        }
+    }, []);
 
     const handleSearch = (e) => {
         const term = e.target.value;
@@ -69,13 +77,15 @@ const Users = () => {
                     )}
                 </div>
 
-                {/* Add User Button */}
-                <button
-                    className="w-full md:w-auto px-4 py-2 bg-blue-500 text-white rounded"
-                    onClick={() => navigate("/add-user")}
-                >
-                    Add New User
-                </button>
+                {/* Conditionally render the Add User Button based on role */}
+                {userRole === "ADMIN" && (
+                    <button
+                        className="w-full md:w-auto px-4 py-2 bg-blue-500 text-white rounded"
+                        onClick={() => navigate("/add-user")}
+                    >
+                        Add New User
+                    </button>
+                )}
             </div>
 
             {/* User Table */}
