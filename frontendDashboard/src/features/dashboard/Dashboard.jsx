@@ -17,8 +17,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      const adminData = localStorage.getItem("admin");
-      console.log(localStorage.getItem("admin"));
+      const adminData = localStorage.getItem("user");
+      console.log(localStorage.getItem("user"));
       if (adminData) {
         try {
           const adminName = JSON.parse(adminData);
@@ -28,7 +28,7 @@ const Dashboard = () => {
         }
       }
       setLoading(false);
-    }, 1500); // Simulate loading delay
+    }, 1500);
   }, []);
 
   const stats = {

@@ -1,7 +1,7 @@
-import  { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Data from "../store/data";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const EditUser = () => {
     const { id } = useParams();
@@ -9,32 +9,63 @@ const EditUser = () => {
 
     const user = Data.find((user) => user.id === parseInt(id));
 
-
     const [formData, setFormData] = useState({
         firstName: user?.firstName || "",
         lastName: user?.lastName || "",
         email: user?.email || "",
         password: "",
-        role: user?.role || ""
+        role: user?.role || "",
     });
+
+    const [originalData, setOriginalData] = useState(formData);
+    const [userRole, setUserRole] = useState(null);
+
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUserRole(parsedUser.role);
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setFormData((prevFormData) => ({
+            ...prevFormData,
             [name]: value,
-        });
+        }));
     };
 
     const handleSubmit = (e) => {
-        if(!localStorage.getItem("admin")){
-            toast.warn("You are not logged in. Login to perform any action");
+        e.preventDefault();
+
+        if (!localStorage.getItem("user")) {
+            toast.warn("You are not logged in. Login to perform any action.");
             return;
-        }        e.preventDefault();
+        }
+
+        if (userRole !== "ADMIN" && userRole !== "EDITOR") {
+            toast.warning("You don't have the authority to update users.");
+            return;
+        }
+
+        const isUnchanged = JSON.stringify(originalData) === JSON.stringify(formData);
+
+        if (isUnchanged) {
+            const confirmUpdate = window.confirm(
+                "No changes detected. Do you want to continue?"
+            );
+
+            if (confirmUpdate) {
+                navigate("/dashboard");
+            }
+            return;
+        }
 
         const userIndex = Data.findIndex((user) => user.id === parseInt(id));
         if (userIndex !== -1) {
             Data[userIndex] = { ...Data[userIndex], ...formData };
+            toast.success("User updated successfully!");
         }
 
         navigate("/dashboard");
@@ -45,7 +76,7 @@ const EditUser = () => {
     }
 
     return (
-        <div className="p-4  mx-auto bg-white shadow-md rounded-lg w-full dark:bg-neutral-600 text-gray-200">
+        <div className="p-4 mx-auto bg-white shadow-md rounded-lg w-full dark:bg-neutral-600 text-gray-200">
             <h2 className="text-2xl font-bold mb-4 pl-2">Edit User</h2>
             <form onSubmit={handleSubmit} className="space-y-4 w-full flex justify-center flex-col">
                 <input
@@ -53,7 +84,7 @@ const EditUser = () => {
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleChange}
-                    placeholder={user.name.split(" ")[0]}
+                    placeholder={user.firstName}
                     className="w-[95%] border p-2 rounded pl-10"
                 />
                 <input
@@ -61,7 +92,7 @@ const EditUser = () => {
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleChange}
-                    placeholder={user.name.split(" ")[1]}
+                    placeholder={user.lastName}
                     className="w-[95%] border p-2 rounded pl-10"
                 />
                 <input
@@ -85,7 +116,6 @@ const EditUser = () => {
                     value={formData.role}
                     onChange={handleChange}
                     className="w-[95%] border p-2 rounded pl-10"
-
                 >
                     <option value="">Select Role</option>
                     <option value="VIEWER">VIEWER</option>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import photo from "../../../assets/register.jpg";
 
 const Signup = () => {
@@ -17,6 +18,7 @@ const Signup = () => {
 
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleChange = (e) => {
@@ -25,6 +27,10 @@ const Signup = () => {
             ...prevData,
             [name]: value,
         }));
+    };
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
     };
 
     const validate = () => {
@@ -70,22 +76,13 @@ const Signup = () => {
 
             if (response.status === 201) {
                 toast.success("Signup successful! Redirecting...", { autoClose: 3000 });
-
+                console.log(response.data);
                 setTimeout(() => {
-                    if (formData.role.toLowerCase() === "admin"){
-                        localStorage.setItem("admin", JSON.stringify(response.data));
-                        navigate("/dashboard");
-
-                    }
-
-                    else {
-                        (window.location.href = "https://www.fortunaeitsolutions.com/");
-                        localStorage.setItem("user", JSON.stringify(response.data));
-
-                    }
+                    const user = { ...response.data, role: formData.role };
+                    localStorage.setItem("user", JSON.stringify(user));
+                    navigate("/dashboard");
                 }, 3000);
-            }
-            else {
+            } else {
                 console.log(response);
                 toast.error(response.data);
             }
@@ -93,7 +90,7 @@ const Signup = () => {
             const errorMessage = error.response?.data?.message || "Signup failed. Please try again.";
             toast.error(errorMessage);
         } finally {
-            setLoading(false); // Reset loading state
+            setLoading(false);
         }
     };
 
@@ -113,63 +110,23 @@ const Signup = () => {
                     <h2 className="text-2xl font-bold text-center mb-4">Create an Account</h2>
 
                     <div className="flex flex-col">
-                        <label htmlFor="firstName" className="text-sm font-semibold">First Name</label>
-                        <input type="text" id="firstName" name="firstName" value={formData.firstName} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1" />
-                        {errors.firstName && <div className="text-red-500 text-sm mt-1">{errors.firstName}</div>}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="lastName" className="text-sm font-semibold">Last Name</label>
-                        <input type="text" id="lastName" name="lastName" value={formData.lastName} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1" />
-                        {errors.lastName && <div className="text-red-500 text-sm mt-1">{errors.lastName}</div>}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="username" className="text-sm font-semibold">Username</label>
-                        <input type="text" id="username" name="username" value={formData.username} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1" />
-                        {errors.username && <div className="text-red-500 text-sm mt-1">{errors.username}</div>}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="email" className="text-sm font-semibold">Email Address</label>
-                        <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1" />
-                        {errors.email && <div className="text-red-500 text-sm mt-1">{errors.email}</div>}
-                    </div>
-
-                    <div className="flex flex-col">
                         <label htmlFor="password" className="text-sm font-semibold">Password</label>
-                        <input type="password" id="password" name="password" value={formData.password} onChange={handleChange} className="border-2 border-gray-300 rounded-md p-2 mt-1" />
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleChange}
+                                className="border-2 border-gray-300 rounded-md p-2 mt-1 w-full"
+                            />
+                            <span
+                                className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
+                                onClick={togglePasswordVisibility}>
+                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                            </span>
+                        </div>
                         {errors.password && <div className="text-red-500 text-sm mt-1">{errors.password}</div>}
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label htmlFor="role" className="text-sm font-semibold">Role</label>
-                        <select id="role" name="role" value={formData.role} onChange={handleChange}
-                                className="border-2 border-gray-300 rounded-md p-2 mt-1">
-                            <option value="">Select Role</option>
-                            <option value="ADMIN">ADMIN</option>
-                            <option value="VIEWER">VIEWER</option>
-                            <option value="EDITOR">EDITOR</option>
-                        </select>
-                        {errors.role && <div className="text-red-500 text-sm mt-1">{errors.role}</div>}
-                    </div>
-
-                    <div className="flex justify-center">
-                        <button
-                            type="submit"
-                            className={`w-full bg-blue-500 text-white font-semibold py-2 rounded-md mt-4 hover:bg-blue-600 flex items-center justify-center ${
-                                loading ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
-                            disabled={loading}
-                        >
-                            {loading ? (
-                                <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></span>
-                            ) : "Sign Up"}
-                        </button>
-                    </div>
-
-                    <div className="text-center mt-4">
-                        <p>Already have an account? <span className="text-blue-500 cursor-pointer" onClick={() => navigate("/login")}>Login</span></p>
                     </div>
                 </form>
             </div>

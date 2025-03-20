@@ -20,7 +20,7 @@ const App = () => {
     const excludePaths = ["/register", "/login"];
 
     useEffect(() => {
-        const isAdminLoggedIn = !!localStorage.getItem("admin");
+        const isAdminLoggedIn = !!localStorage.getItem("user");
         if (isAdminLoggedIn && location.pathname === "/") {
             navigate("/dashboard");
         }

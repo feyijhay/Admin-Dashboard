@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 
 const LoginPage = () => {
@@ -9,6 +10,7 @@ const LoginPage = () => {
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("VIEWER");
     const [loading, setLoading] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const navigate = useNavigate();
 
@@ -22,22 +24,16 @@ const LoginPage = () => {
 
         try {
             const response = await axios.post(endpoint, { email, password });
-            console.log(role)
+            console.log(role);
             console.log(response);
             if (response.status === 201) {
                 toast.success("Login successful!");
                 console.log("Login Response:", response.data);
-
+                const user = response.data;
+                user.role = role;
                 localStorage.setItem("token", response.data.token);
-
-                if (role === "ADMIN") {
-                    localStorage.setItem("admin", JSON.stringify(response.data));
-                    navigate("/dashboard");
-                } else {
-                    localStorage.setItem("user", JSON.stringify(response.data));
-
-                    window.location.href = "https://www.fortunaeitsolutions.com/";
-                }
+                localStorage.setItem("user", JSON.stringify(user));
+                navigate("/dashboard");
             } else {
                 toast.error(response.data?.message || "Login failed!");
                 console.error("Error Response:", response.data);
@@ -77,15 +73,22 @@ const LoginPage = () => {
                             required
                         />
                     </div>
-                    <div>
+                    <div className="relative">
                         <label className="block font-medium">Password</label>
                         <input
-                            type="password"
+                            type={showPassword ? "text" : "password"} // Toggle between text and password
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1"
+                            className="w-full border border-gray-300 rounded-md px-3 py-2 mt-1 pr-10"
                             required
                         />
+                        {/* Eye Icon for toggling password visibility */}
+                        <span
+                            className="absolute right-3 top-10 cursor-pointer"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+                        </span>
                     </div>
                     <button
                         type="submit"

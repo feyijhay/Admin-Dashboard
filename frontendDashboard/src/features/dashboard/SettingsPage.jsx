@@ -9,9 +9,9 @@ import {useNavigate} from "react-router-dom";
 const SettingsPage = () => {
     const { isDarkMode, toggleTheme } = useTheme();
     const [emailNotifications, setEmailNotifications] = useState(true);
-    const [firstName, setFirstName] = useState(JSON.parse(localStorage.getItem("admin")).firstName || "");
-    const [lastName, setLastName] = useState(JSON.parse(localStorage.getItem("admin")).lastName || "");
-    const [email, setEmail] = useState(JSON.parse(localStorage.getItem("admin")).email || "");
+    const [firstName, setFirstName] = useState(JSON.parse(localStorage.getItem("user")).firstName || "");
+    const [lastName, setLastName] = useState(JSON.parse(localStorage.getItem("user")).lastName || "");
+    const [email, setEmail] = useState(JSON.parse(localStorage.getItem("user")).email || "");
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -20,7 +20,8 @@ const SettingsPage = () => {
         setLoading(true); // Start loading animation
 
         setTimeout(() => {
-            const admin = JSON.parse(localStorage.getItem("admin"));
+            const admin = JSON.parse(localStorage.getItem("user"));
+            console.log(admin)
             const storedFirstName = admin.firstName;
             const storedLastName = admin.lastName;
 
@@ -30,7 +31,7 @@ const SettingsPage = () => {
             if (lastName && lastName !== storedLastName) {
                 admin.lastName = lastName;
             }
-            localStorage.setItem("admin", JSON.stringify(admin));
+            localStorage.setItem("user", JSON.stringify(admin));
             setLoading(false);
             navigate("/dashboard");
             toast.success("Changes saved successfully");

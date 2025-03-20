@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -6,22 +6,21 @@ import { toast } from "react-toastify";
 const UserTable = ({ users }) => {
     const [userList, setUserList] = useState(users);
     const navigate = useNavigate();
+    const [userRole, setUserRole] = useState(null);
 
-    const isAdminLoggedIn = () => !!localStorage.getItem("admin");
+    useEffect(() => {
+        const storedUser = localStorage.getItem("user");
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUserRole(parsedUser.role);
+        }
+    }, []);
 
     const handleEdit = (userId) => {
-        if (!isAdminLoggedIn()) {
-            toast.warn("You are not logged in. Login to perform any action");
-            return;
-        }
         navigate(`/edit-user/${userId}`);
     };
 
     const handleDelete = (userId) => {
-        if (!isAdminLoggedIn()) {
-            toast.warn("You are not logged in. Login to perform any action");
-            return;
-        }
         setUserList(userList.filter((user) => user.id !== userId));
     };
 
@@ -44,29 +43,33 @@ const UserTable = ({ users }) => {
                         <td className="py-2 px-4">{user.email}</td>
                         <td className="py-2 px-4">{user.role}</td>
                         <td className="py-2 px-4">
-                <span
-                    className={`py-1 rounded ${
-                        user.status === "active"
-                            ? "bg-green-100 text-green-800 px-6"
-                            : "bg-red-100 text-red-800 px-4"
-                    }`}
-                >
-                  {user.status}
-                </span>
+                                <span
+                                    className={`py-1 rounded ${
+                                        user.status === "active"
+                                            ? "bg-green-100 text-green-800 px-6"
+                                            : "bg-red-100 text-red-800 px-4"
+                                    }`}
+                                >
+                                    {user.status}
+                                </span>
                         </td>
                         <td className="py-2 px-4">
-                            <button
-                                className="text-blue-500 hover:text-blue-700 mr-2"
-                                onClick={() => handleEdit(user.id)}
-                            >
-                                Edit
-                            </button>
-                            <button
-                                className="text-red-500 hover:text-red-700"
-                                onClick={() => handleDelete(user.id)}
-                            >
-                                Delete
-                            </button>
+                            {userRole === "EDITOR" || userRole === "ADMIN" ? (
+                                <button
+                                    className="text-blue-500 hover:text-blue-700 mr-2"
+                                    onClick={() => handleEdit(user.id)}
+                                >
+                                    Edit
+                                </button>
+                            ) : null}
+                            {userRole === "ADMIN" ? (
+                                <button
+                                    className="text-red-500 hover:text-red-700"
+                                    onClick={() => handleDelete(user.id)}
+                                >
+                                    Delete
+                                </button>
+                            ) : null}
                         </td>
                     </tr>
                 ))}
@@ -74,18 +77,12 @@ const UserTable = ({ users }) => {
             </table>
 
             {/* Mobile View - Card Layout */}
-            <div className="md:hidden ">
+            <div className="md:hidden">
                 {userList.map((user) => (
                     <div key={user.id} className="bg-white p-4 rounded shadow mb-4 border dark:bg-gray-500">
-                        <p>
-                            <strong>Name:</strong> {user.name}
-                        </p>
-                        <p>
-                            <strong>Email:</strong> {user.email}
-                        </p>
-                        <p>
-                            <strong>Role:</strong> {user.role}
-                        </p>
+                        <p><strong>Name:</strong> {user.name}</p>
+                        <p><strong>Email:</strong> {user.email}</p>
+                        <p><strong>Role:</strong> {user.role}</p>
                         <p>
                             <strong>Status:</strong>
                             <span
@@ -95,22 +92,26 @@ const UserTable = ({ users }) => {
                                         : "bg-red-100 text-red-800"
                                 }`}
                             >
-                {user.status}
-              </span>
+                                {user.status}
+                            </span>
                         </p>
                         <div className="mt-2">
-                            <button
-                                className="text-blue-500 hover:text-blue-700 mr-2"
-                                onClick={() => handleEdit(user.id)}
-                            >
-                                Edit
-                            </button>
-                            <button
-                                className="text-red-500 hover:text-red-700"
-                                onClick={() => handleDelete(user.id)}
-                            >
-                                Delete
-                            </button>
+                            {userRole === "EDITOR" || userRole === "ADMIN" ? (
+                                <button
+                                    className="text-blue-500 hover:text-blue-700 mr-2"
+                                    onClick={() => handleEdit(user.id)}
+                                >
+                                    Edit
+                                </button>
+                            ) : null}
+                            {userRole === "ADMIN" ? (
+                                <button
+                                    className="text-red-500 hover:text-red-700"
+                                    onClick={() => handleDelete(user.id)}
+                                >
+                                    Delete
+                                </button>
+                            ) : null}
                         </div>
                     </div>
                 ))}

@@ -1,12 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
+// eslint-disable-next-line react/prop-types
 const Navbar = ({ toggleSidebar, isSidebarOpen }) => {
     const navigate = useNavigate();
     const location = useLocation();
 
     const handleLogout = () => {
-        localStorage.removeItem("admin");
+        localStorage.removeItem("user");
         navigate("/login");
     };
 
